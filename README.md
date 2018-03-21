@@ -14,4 +14,5 @@ nvcc -o compareAlgorithms compareAlgorithms.cu  -I./lib/ -I.  -lcurand -lm -lgsl
 # Bugfixed:
     syncthreads() --> __syncthreads()
 
-# Credit to Tolu Alabi, Jeffrey D. Blanchard, Bradley Gordon, and Russel Steinbach
+# Credit 
+ Tolu Alabi, Jeffrey D. Blanchard, Bradley Gordon, and Russel Steinbach
