@@ -232,41 +232,71 @@ void runTests(uint generateType, char* fileName,uint startPower, uint stopPower,
 }
 
 
-int main(int argc, char** argv)
+//int main(int argc, char** argv)
+//{
+//  char *fileName;
+//
+//  uint testCount;
+//  fileName = (char*) malloc(60 * sizeof(char));
+//  printf("Please enter filename now: ");
+//  scanf("%s%",fileName);
+//
+//  uint type,distributionType,startPower,stopPower;
+//  
+//  printf("Please enter the type of value you want to test:\n1-float\n2-double\n3-uint\n");
+//  scanf("%u", &type);
+//  printf("Please enter Distribution type: ");
+//  scanf("%u", &distributionType);
+//  printf("Please enter  number of tests to run per K: ");
+//  scanf("%u", &testCount);
+//  printf("Please enter Start power: ");
+//  scanf("%u", &startPower);
+//  printf("Please enter Stop power: ");
+//  scanf("%u", &stopPower); 
+//
+//  switch(type){
+//  case 1:
+//    runTests<float>(distributionType,fileName,startPower,stopPower,testCount);
+//    break;
+//  case 2:
+//    runTests<double>(distributionType,fileName,startPower,stopPower,testCount);
+//    break;
+//  case 3:
+//    // runTests<uint>(distributionType,fileName,startPower,stopPower,testCount);
+//    break;
+//  default:
+//    printf("You entered and invalid option, now exiting\n");
+//    break;
+//  }
+//  return 0;
+//}
+
+int main(int args, char **argv)
 {
-  char *fileName;
+    typedef float T;
+    
+    std::cout<<"./exe dataCount k\n";
+    if(args != 3) exit(-1);
 
-  uint testCount;
-  fileName = (char*) malloc(60 * sizeof(char));
-  printf("Please enter filename now: ");
-  scanf("%s%",fileName);
+    int dataCount = atoi(argv[1]);
+    int k = atoi(argv[2]);
 
-  uint type,distributionType,startPower,stopPower;
-  
-  printf("Please enter the type of value you want to test:\n1-float\n2-double\n3-uint\n");
-  scanf("%u", &type);
-  printf("Please enter Distribution type: ");
-  scanf("%u", &distributionType);
-  printf("Please enter  number of tests to run per K: ");
-  scanf("%u", &testCount);
-  printf("Please enter Start power: ");
-  scanf("%u", &startPower);
-  printf("Please enter Stop power: ");
-  scanf("%u", &stopPower); 
+    T *hostVec = new T[dataCount];
+    for(int i = 0; i < dataCount; i ++)
+        hostVec [i] = rand() % 15;
 
-  switch(type){
-  case 1:
-    runTests<float>(distributionType,fileName,startPower,stopPower,testCount);
-    break;
-  case 2:
-    runTests<double>(distributionType,fileName,startPower,stopPower,testCount);
-    break;
-  case 3:
-    // runTests<uint>(distributionType,fileName,startPower,stopPower,testCount);
-    break;
-  default:
-    printf("You entered and invalid option, now exiting\n");
-    break;
-  }
-  return 0;
+    for(int i = 0; i < dataCount; i++)
+        std::cout<<hostVec[i]<<" ";
+    std::cout<<"\n";
+    
+//This is the struct type of results_t<T>
+//template <typename T>
+// struct results_t{
+//  float time;
+//  T val;
+//};
+    results_t<T> *res = timeBucketSelect<T>(hostVec, dataCount, k);
+
+    std::cout<<"Time value: "<<res->time<<" "<<res->val<<"\n";
+    return 0;
 }
